@@ -1,0 +1,26 @@
+import disnake
+from disnake.ext import commands
+
+intents = disnake.Intents(messages=True, guilds=True)
+
+bot = commands.Bot(command_prefix='!', intents=disnake.Intents.all())
+
+bot.remove_command('help')
+
+bot.load_extension("cogs.start")
+
+
+def log_data():
+    with open('token.txt') as readtoken:
+        token = readtoken.readlines()
+        return token
+
+
+@bot.event
+async def on_ready():
+    print(f"Bot is ready!")
+    await bot.change_presence(activity=disnake.Game(name='', type=1 - 4),
+                              status=disnake.Status.online)
+
+
+bot.run(str(log_data()[0]))
